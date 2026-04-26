@@ -54,7 +54,7 @@ try:
         for i in range(1, len(r_list)):
             total = total + r_list[i]
         print(f"{total}")
-        print(f"{total():.4f}")  # Покаже наприклад 5.2500
+        print(f"{total():.4f}") 
     else:
         print("nothing")
 except FileNotFoundError:
