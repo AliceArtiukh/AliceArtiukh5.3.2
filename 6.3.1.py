@@ -24,7 +24,18 @@ class Rational:
         return Rational(self._n * other._d + other._n * self._d, self._d * other._d)
     def __str__(self):
         return f"{self._n}/{self._d}"
-
+class RationalIterator:
+    def __init__(self, items):
+        self._data = sorted(items, key=lambda x: (x._d, x._n), reverse=True)
+        self._index = 0
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self._index < len(self._data):
+            result = self._data[self._index]
+            self._index += 1
+            return result
+        raise StopIteration
 class RationalList:
     def __init__(self):
         self._items=[]
@@ -32,9 +43,6 @@ class RationalList:
         return len(self._items)
     def __getitem__(self, index):
         return self._items[index]
-    def __setitem__(self, index, value):
-        if not isinstance(value, Rational): value = Rational(value)
-        self._items[index] = value
     def __iadd__(self, other):
         if isinstance(other, RationalList):
             self._items.extend(other._items)
@@ -43,16 +51,7 @@ class RationalList:
             self._items.append(other)
         return self
     def __iter__(self):
-        self._sorted_data = sorted(self._items, key=lambda x: (x._d, x._n), reverse=True)
-        self._index = 0
-        return self
-    def __next__(self):
-        if self._index < len(self._sorted_data):
-            result = self._sorted_data[self._index]
-            self._index += 1
-            return result
-        else:
-            raise StopIteration
+        return RationalIterator(self._items)
     def __str__(self):
         return "[" + ", ".join(str(x) for x in self._items) + "]"
 
